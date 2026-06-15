@@ -1,18 +1,26 @@
 
-import logging;
-import json;
+import logging
+import json
 
 """
 He creado un proyecto sobre un restaurante de la forma mas simple posible pero que nos
 permite  añadir, buscar, modificar, eliminar y mostrar platos.
 """
+"""
+Creacion de los archivos para logging y JSON
+"""
+ARCHIVO_JSON = "menu.json"
+
+ARCHIVO_LOGGING = "menu.log"
+
+
 
 """
 Configuracion del logging
 
 """
 logging.basicConfig(
-    filename="app.log",
+    filename=ARCHIVO_LOGGING,
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
@@ -26,9 +34,9 @@ def cargar_datos():
 
 
     try:
-        with open("menu.json", "r") as archivo:
+        with open(ARCHIVO_JSON, "r") as archivo:
             return json.load(archivo)
-    except:
+    except FileNotFoundError:
         logging.warning("No se pudo cargar menu.json, se inicia menú vacío")
         return []
 
@@ -36,7 +44,7 @@ def guardar_datos(datos):
     """
     Guarda los datos del menú en un archivo JSON.
     """
-    with open("menu.json", "w") as archivo:
+    with open(ARCHIVO_JSON, "w") as archivo:
         json.dump(datos, archivo, indent=4)
 
 menu = cargar_datos()
@@ -63,10 +71,10 @@ def insertar_elemento(datos):
         datos.append(plato)
         guardar_datos(datos)
 
-    logging.info(f"Plato añadido: {plato}")
+        logging.info(f"Plato añadido: {plato}")
         print("Plato añadido correctamente.")
 
-except:
+    except ValueError :
         logging.error("Error al insertar un plato")
         print("Error: datos incorrectos.")
 
@@ -81,14 +89,14 @@ def buscar_elemento(datos):
         for plato in datos:
             if plato["id"] == id_buscar:
                 print(plato)
-            logging.info(f"Plato buscado: {plato}")
+                logging.info(f"Plato buscado: {plato}")
                 return
 
         print("Plato no encontrado.")
-            logging.info(f"Plato no encontrado al buscar ID {id_buscar}")
-    except:
+        logging.info(f"Plato no encontrado al buscar ID {id_buscar}")
+    except ValueError:
             logging.error("Error al buscar un plato")
-        print("Error al buscar el plato.")
+            print("Error al buscar el plato.")
 
 
 def modificar_elemento(datos):
@@ -102,22 +110,17 @@ def modificar_elemento(datos):
             if plato["id"] == id_modificar:
                 nuevo_precio = float(input("Nuevo precio: "))
                 plato["precio"] = nuevo_precio
-
-
-            guardar_datos(datos)
+                guardar_datos(datos)
                 logging.info(f"Plato modificado: {plato}")
-
-
-
                 print("Plato modificado.")
                 return
 
         print("Plato no encontrado.")
-         logging.info(f"No se encontró plato para modificar con ID {id_modificar}")
+        logging.info(f"No se encontró plato para modificar con ID {id_modificar}")
 
-    except:
+    except ValueError:
             logging.error("Error al modificar un plato")
-        print("Error al modificar el plato.")
+            print("Error al modificar el plato.")
 
 
 def eliminar_elemento(datos):
@@ -131,18 +134,14 @@ def eliminar_elemento(datos):
         for plato in datos:
             if plato["id"] == id_eliminar:
                 datos.remove(plato)
-
-
                 guardar_datos(datos)
                 logging.info(f"Plato eliminado: {plato}")
-
-
                 print("Plato eliminado.")
                 return
 
         print("Plato no encontrado.")
-            logging.info(f"No se encontró plato para eliminar con ID {id_eliminar}")
-    except:
+        logging.info(f"No se encontró plato para eliminar con ID {id_eliminar}")
+    except ValueError:
         logging.error("Error al eliminar un plato")
         print("Error al eliminar el plato.")
 
@@ -158,7 +157,9 @@ def mostrar_todos(datos):
     else:
         for plato in datos:
             print(plato)
-            logging.info("Se mostró el menú completo")
+        logging.info("Se mostró el menú completo")
+
+
 
 
 def menu_principal():
@@ -194,6 +195,9 @@ def menu_principal():
             print("Saliendo del programa...")
         else:
             print("Opción incorrecta.")
+
+
+
 
 
 menu_principal()
