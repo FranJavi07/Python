@@ -1,0 +1,4 @@
+2026-06-15 11:07:55,697 - INFO - Programa iniciado
+2026-06-15 11:07:55,697 - WARNING - No se pudo cargar menu.json, se inicia menú vacío
+2026-06-15 11:08:13,784 - INFO - Plato añadido: {'id': 23, 'nombre': 'Patatas', 'precio': 2.0}
+2026-06-15 11:08:21,415 - INFO - Se mostró el menú completo
